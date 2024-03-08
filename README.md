@@ -1,3 +1,5 @@
+# ModHabitarNotes:
+Queda pendiente agregar librería loudness y sunlight sensor, para habilitar todas las clases sensores (quedan estás dos sin habilitar)
 # Build Your Own LoRaWAN Sensor With SenseCAP S2110 XIAO LoRaWAN SensorBuilder
 
 This is the source code for [SenseCAP S2110 XIAO LoRaWAN SensorBuilder](https://www.seeedstudio.com/SenseCAP-XIAO-LoRaWAN-Controller-p-5474.html) and it provides an open-source tool to build your own LoRaWAN sensors.

@@ -1,10 +1,32 @@
 {
     "name": "SeeedArduinoS2110",
-    "version": "1.0.0",
+    "version": "1.1.0",
+    "description": "Forked version of Seed studio firmware for S2110 board, adds several more sensors support",
     "build": {
         "includeDir": "."
     },
+    "authors": [
+        {
+            "name": "Seed Studio",
+            "url": "https://www.seedstudio.com"
+        },
+        {
+            "name": "Giovanni Troncoso",
+            "email": "giovanni.troncosob@gmail.com",
+            "url": "https://www.linkedin.com/in/giovannitb/"
+        }
+    ],
     "dependencies": {
-        "arduino-libraries/ArduinoRS485": "^1.0.5"
-    }
+        "arduino-libraries/ArduinoRS485": "^1.0.5",
+        "arduino-libraries/ArduinoModbus": "^1.0.9",
+        "seeed-studio/Grove - Barometer Sensor BMP280": "https://github.com/Seeed-Studio/Grove_BMP280.git",
+        "seeed-studio/Grove - Sunlight Sensor": "https://github.com/Seeed-Studio/Grove_Sunlight_Sensor.git#Si1151",
+        "seed-studio/Grove - BME68x": "https://github.com/Seeed-Studio/Seeed_Arduino_BME68x.git",
+        "sensirion/Sensirion I2C SCD4x": "^0.4.0",
+        "seeed-studio/Grove Ultrasonic Ranger": "^1.0.1",
+        "sensirion/Sensirion I2C SEN5X": "^0.3.0",
+        "seeed-studio/Grove - Temperature Sensor MCP9808":"https://github.com/Seeed-Studio/Grove_Temperature_sensor_MCP9808.git",
+        "seeed-studio/Grove - Multichannel Gas Sensor": "https://github.com/Seeed-Studio/Seeed_Arduino_MultiGas.git"
+    },
+    "frameworks": "arduino"
 }

@@ -2,22 +2,12 @@
 #define _SENSOR_CLASS_H
 
 #include "Arduino.h"
-#include "pins_arduino.h" //_by_JRA
 #include <vector>
 
-// #define D2 28
-// #define D3 29
-// // #define D4 6//  by_JRA
-// // #define D5 7//  by_JRA
-// // #define D6 0//  by_JRA
-// // #define D7 1//  by_JRA
-// #define D8 2//16  by_JRA
-// // #define D9 4//  by_JRA
-// #define D10 (16u) //19  by_JRA
 
 #define GROVE_SWITCH_PIN D10
-#define SENSOR_ANALOG_PIN PIN_A3//A3  by_JRA
-#define SENSOR_ANALOG_E_PIN PIN_A2//A2  by_JRA
+#define SENSOR_ANALOG_PIN A3
+#define SENSOR_ANALOG_E_PIN A2
 #define SENSOR_DIGITAL_PIN D3
 #define SENSOR_DIGITAL_E_PIN D2
 #define SENSOR_IIC_SCL_PIN SCL
