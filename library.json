@@ -1,0 +1,10 @@
+{
+    "name": "SeeedArduinoS2110",
+    "version": "1.0.0",
+    "build": {
+        "includeDir": "."
+    },
+    "dependencies": {
+        "arduino-libraries/ArduinoRS485": "^1.0.5"
+    }
+}
