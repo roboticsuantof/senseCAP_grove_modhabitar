@@ -33,10 +33,12 @@ public:
 
     enum
     {
-        ENV_T = 0x00,
-        ENV_RH = 0x01,
-        ENV_VOC = 0x02, 
-        ENV_PM = 0x03, // unit : PPM
+        ENV_T = 0,
+        ENV_RH = 1,
+        ENV_VOC = 2, 
+        ENV_PM_1 = 3, // unit : PPM
+        ENV_PM_2_5 = 4, // unit : PPM
+        ENV_PM_10 = 5, // unit : PPM
         MAX
     };
 
@@ -48,12 +50,6 @@ uint16_t sensorEnvironmental::init(uint16_t reg, bool i2c_available)
 {
     uint16_t t_reg = reg;
 
-    // Serial.print("Environmental t_reg: ");
-    // Serial.println(t_reg);
-    // Serial.print("Environmental i2c_available: ");
-    // Serial.println(i2c_available);
-    // Serial.print("Environmental sensorEnvironmental::MAX: ");
-    Serial.println(sensorEnvironmental::MAX);
     for (uint16_t i = 0; i < sensorEnvironmental::MAX; i++)
     {
         sensorClass::reg_t value;
@@ -74,8 +70,6 @@ uint16_t sensorEnvironmental::init(uint16_t reg, bool i2c_available)
     GROVE_SWITCH_IIC;
     Wire.begin();
     Wire.beginTransmission(SENSOR_ENVIRONMENTAL_I2C_ADDR);
-    // Serial.print("Wire.endTransmission() != 0: ");
-    // Serial.println(Wire.endTransmission());
     if (Wire.endTransmission() != 0)
     {
         _connected = false;
@@ -113,28 +107,20 @@ bool sensorEnvironmental::sample()
     env.readMeasuredValues(mass_concentration_pm1p0, mass_concentration_pm2p5, mass_concentration_pm4p0, mass_concentration_pm10p0,
                            ambient_humidity, ambient_temperature, voc_index, nox_index);
 
-    int32_t val_PM = mass_concentration_pm10p0;
+    int32_t val_PM1p0 = mass_concentration_pm1p0;
+    int32_t val_PM2p5 = mass_concentration_pm2p5;
+    int32_t val_PM4p0 = mass_concentration_pm4p0;
+    int32_t val_PM10p0 = mass_concentration_pm10p0;
     int32_t val_VOC = voc_index;
     int32_t val_RH = ambient_humidity;
     int32_t val_T = ambient_temperature;
 
-    // int32_t val_PM = env.measure_NO2();
-    // int32_t val_VOC = env.measure_C2H5OH();
-    // int32_t val_RH = env.measure_VOC();
-    // int32_t val_T = env.measure_CO();
-    // Serial.print("val_PM: ");
-    //  Serial.println(val_PM);
-    // Serial.print("val_VOC: ");
-    //  Serial.println(val_VOC);
-    // Serial.print("val_RH: ");
-    //  Serial.println(val_RH);
-    // Serial.print("val_T: ");
-    //  Serial.println(val_T);
-
     m_valueVector[ENV_T].value.s32 = val_T * SCALE;
     m_valueVector[ENV_RH].value.s32 = val_RH * SCALE;
     m_valueVector[ENV_VOC].value.s32 = val_VOC * SCALE;
-    m_valueVector[ENV_PM].value.s32 = val_PM * SCALE;
+    m_valueVector[ENV_PM_1].value.s32 = val_PM1p0 * SCALE;
+    m_valueVector[ENV_PM_2_5].value.s32 = val_PM2p5 * SCALE;
+    m_valueVector[ENV_PM_10].value.s32 = val_PM10p0 * SCALE;
 
     return true;
 }
