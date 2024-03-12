@@ -19,7 +19,7 @@
 
 // SensirionI2CSen5x sen5x;
 
-#define SENSOR_ENVIRONMENTAL_I2C_ADDR 0x08
+#define SENSOR_ENVIRONMENTAL_I2C_ADDR 0x69
 
 class sensorEnvironmental : public sensorClass
 {
@@ -33,10 +33,10 @@ public:
 
     enum
     {
-        ENV_PM = 0x00, // unit : PPM
-        ENV_VOC = 0x01, 
-        ENV_RH = 0x02,
-        ENV_T = 0x03,
+        ENV_T = 0x00,
+        ENV_RH = 0x01,
+        ENV_VOC = 0x02, 
+        ENV_PM = 0x03, // unit : PPM
         MAX
     };
 
@@ -76,11 +76,11 @@ uint16_t sensorEnvironmental::init(uint16_t reg, bool i2c_available)
     Wire.beginTransmission(SENSOR_ENVIRONMENTAL_I2C_ADDR);
     // Serial.print("Wire.endTransmission() != 0: ");
     // Serial.println(Wire.endTransmission());
-    // if (Wire.endTransmission() != 0)
-    // {
-    //     _connected = false;
-    //     return t_reg - reg;
-    // }
+    if (Wire.endTransmission() != 0)
+    {
+        _connected = false;
+        return t_reg - reg;
+    }
 
     GROVE_SWITCH_IIC;
     env.begin(Wire);
@@ -131,10 +131,10 @@ bool sensorEnvironmental::sample()
     // Serial.print("val_T: ");
     //  Serial.println(val_T);
 
-    m_valueVector[ENV_PM].value.s32 = val_PM * SCALE;
-    m_valueVector[ENV_VOC].value.s32 = val_VOC * SCALE;
-    m_valueVector[ENV_RH].value.s32 = val_RH * SCALE;
     m_valueVector[ENV_T].value.s32 = val_T * SCALE;
+    m_valueVector[ENV_RH].value.s32 = val_RH * SCALE;
+    m_valueVector[ENV_VOC].value.s32 = val_VOC * SCALE;
+    m_valueVector[ENV_PM].value.s32 = val_PM * SCALE;
 
     return true;
 }

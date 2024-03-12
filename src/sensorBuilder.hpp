@@ -56,6 +56,7 @@ public:
     bool begin(uint8_t slave = SENSOR_BUILDER_DEF_SLAVE, uint32_t baudrate = SENSOR_BUILDER_DEF_BAUD);
     int poll();
     uint16_t size();
+    void print_connected_sensors_registers_address(void);
 };
 
 void SensorBuilderClass::check_grove()
@@ -121,19 +122,17 @@ bool SensorBuilderClass::begin(uint8_t slave, uint32_t baudrate)
 int SensorBuilderClass::poll()
 {
     for (auto iter = m_sensorMap.begin(); iter != m_sensorMap.end(); ++iter)
-    {   
+    {
         sensorClass *sensor = (sensorClass *)iter->second;
 
         if (!sensor->connected())
         {
-// Serial.println("SensorBuilderClass::poll()    Sensor not Connected "); 
             continue;
         }
 
         sensor->sample();
 
         auto m_measureValue = sensor->getMeasureValue();
-
         Serial.println(sensor->name().c_str());
         for (auto m_iter = m_measureValue.begin(); m_iter != m_measureValue.end(); ++m_iter)
         {
@@ -199,7 +198,6 @@ uint16_t SensorBuilderClass::addSensor(sensorClass *_sensor)
 {
     uint16_t regs = 0;
 
-// Serial.println("Entro addSensor");
     for (std::map<uint16_t, sensorClass *>::const_iterator iter = m_sensorMap.begin(); iter != m_sensorMap.end(); ++iter)
     {
         if (iter->second == _sensor)
@@ -210,18 +208,9 @@ uint16_t SensorBuilderClass::addSensor(sensorClass *_sensor)
 
     m_sensorMap.insert(std::pair<uint16_t, sensorClass *>(m_sensorMap.size(), _sensor));
 
-// Serial.print("ANTES INIT() _regs =  ");
-// Serial.println(_regs);
-// Serial.print("SensorBuilderClass::addSensor ANTES INIT()  regs =  ");
-// Serial.println(regs);
     regs = _sensor->init(_regs, _i2c_available);
-// Serial.print("SensorBuilderClass::addSensor DESPUES INIT()  regs =  ");
-// Serial.println(regs);
+
     _regs += regs;
-// Serial.print("DESPUES INIT() _regs =  ");
-// Serial.println(_regs);
-// Serial.print("_i2c_available =  ");
-// Serial.println(_i2c_available);
 
     return regs;
 }
@@ -239,5 +228,22 @@ uint16_t SensorBuilderClass::addSensor(sensorClass *_sensor)
 
 //     return false;
 // }
+
+void SensorBuilderClass::print_connected_sensors_registers_address(void)
+{
+    for (auto iter = m_sensorMap.begin(); iter != m_sensorMap.end(); ++iter)
+    {
+        sensorClass *sensor = (sensorClass *)iter->second;
+        auto m_measureValue = sensor->getMeasureValue();
+        Serial.print(sensor->name().c_str());
+        Serial.print(" sensor registers: ");
+        for (auto m_iter = m_measureValue.begin(); m_iter != m_measureValue.end(); ++m_iter)
+        {
+            Serial.print(m_iter->addr);
+            Serial.print(", ");
+        }
+        Serial.println();
+    }
+}
 
 #endif
